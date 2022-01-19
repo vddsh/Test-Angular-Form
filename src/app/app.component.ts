@@ -22,6 +22,7 @@ export class AppComponent {
   frameworks: string[] = ['angular', 'react', 'vue'];
   versions: any = [];
   frameworkVersions: any = [];
+  month: any = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   private readonly existsEmails = ['test@test.test'];
 
@@ -34,6 +35,7 @@ export class AppComponent {
       dateOfBirth: new FormControl(null, [Validators.required]),
       framework: new FormControl(null, [Validators.required]),
       frameworkVersion: new FormControl(null, [Validators.required]),
+      hobby: new FormControl(null, [Validators.required]),
       email: new FormControl(
         null,
         [Validators.required, Validators.email],

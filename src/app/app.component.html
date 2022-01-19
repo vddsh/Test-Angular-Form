@@ -1,5 +1,5 @@
 <div class="container">
-  <form [formGroup]="personForm" (ngSubmit)="onSubmit()">
+  <form class="frm" [formGroup]="personForm" (ngSubmit)="onSubmit()">
     <mat-form-field [appearance]="'fill'">
       <mat-label>Name</mat-label>
       <input
@@ -85,7 +85,35 @@
         [diameter]="20"
       ></mat-progress-spinner>
     </mat-form-field>
-    <button mat-button color="primary">
+    <div class="form__hobby">
+      <div class="hby">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Hobby</mat-label>
+          <input matInput type="text" placeholder="Hobby" formControlName="" />
+        </mat-form-field>
+      </div>
+      <div class="hby">
+        <mat-form-field appearance="fill">
+          <mat-label>Duration</mat-label>
+          <mat-select formControlName="">
+            <mat-option *ngFor="let m of month" [value]="m">{{
+              m + " month"
+            }}</mat-option>
+          </mat-select>
+
+          <!-- <mat-error
+          *ngIf="personForm.controls['frameworkVersion'].errors?.['required']"
+          >An framework version is required!
+        </mat-error> -->
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button color="warn">
+          Add Hobby
+        </button>
+      </div>
+    </div>
+    <button class="sub" mat-raised-button color="primary">
       Submit
     </button>
   </form>
