@@ -85,31 +85,53 @@
         [diameter]="20"
       ></mat-progress-spinner>
     </mat-form-field>
-    <div class="form__hobby">
+    <div
+      class="form__hobby inpur__row"
+      *ngFor="let h of hobbiesArray.controls; last as isLast; index as idx"
+    >
       <div class="hby">
         <mat-form-field class="example-full-width" appearance="fill">
           <mat-label>Hobby</mat-label>
-          <input matInput type="text" placeholder="Hobby" formControlName="" />
+          <input
+            matInput
+            type="text"
+            placeholder="Hobby"
+            formControlName="hobby"
+          />
+          <mat-error *ngIf="personForm.controls['hobby'].errors?.['required']"
+            >An framework version is required!
+          </mat-error>
         </mat-form-field>
       </div>
       <div class="hby">
         <mat-form-field appearance="fill">
           <mat-label>Duration</mat-label>
-          <mat-select formControlName="">
+          <mat-select formControlName="hobby">
             <mat-option *ngFor="let m of month" [value]="m">{{
               m + " month"
             }}</mat-option>
           </mat-select>
-
-          <!-- <mat-error
-          *ngIf="personForm.controls['frameworkVersion'].errors?.['required']"
-          >An framework version is required!
-        </mat-error> -->
+          <mat-error *ngIf="personForm.controls['hobby'].errors?.['required']"
+            >An framework version is required!
+          </mat-error>
         </mat-form-field>
       </div>
       <div>
-        <button mat-raised-button color="warn">
+        <button
+          mat-raised-button
+          color="primary"
+          *ngIf="isLast"
+          (click)="addInputControl()"
+        >
           Add Hobby
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="removeInputControl(idx)"
+          *ngIf="hobbiesArray.length > 1"
+        >
+          Delete Hobby
         </button>
       </div>
     </div>

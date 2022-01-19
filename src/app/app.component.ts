@@ -23,6 +23,7 @@ export class AppComponent {
   versions: any = [];
   frameworkVersions: any = [];
   month: any = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  hobbiesArray = new FormArray([new FormControl([], Validators.required)]);
 
   private readonly existsEmails = ['test@test.test'];
 
@@ -71,5 +72,11 @@ export class AppComponent {
 
   onSubmit(): void {
     console.log(this.personForm.value);
+  }
+  addInputControl() {
+    this.hobbiesArray.push(new FormControl('', Validators.required));
+  }
+  removeInputControl(idx: number) {
+    this.hobbiesArray.removeAt(idx);
   }
 }
