@@ -60,22 +60,6 @@ export class AppComponent {
     });
   }
 
-  private initForm() {
-    this.personForm = new FormGroup({
-      firstName: new FormControl(null, [Validators.required]),
-      lastName: new FormControl(null, [Validators.required]),
-      dateOfBirth: new FormControl(null, [Validators.required]),
-      framework: new FormControl(null, [Validators.required]),
-      frameworkVersion: new FormControl(null, [Validators.required]),
-      hobby: new FormArray([], [Validators.required]),
-      email: new FormControl(
-        null,
-        [Validators.required, Validators.email],
-        this.emailValidator()
-      )
-    });
-  }
-
   private isEmailExist(email: string): Observable<boolean> {
     return of(this.existsEmails.includes(email));
   }
