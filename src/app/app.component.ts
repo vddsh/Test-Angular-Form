@@ -2,9 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {
   AbstractControl,
-  AsyncValidator,
   AsyncValidatorFn,
-  FormBuilder,
   FormControl,
   FormGroup,
   ValidationErrors,
@@ -19,11 +17,17 @@ import { delay, map, Observable, of } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  frameworks: string[] = ['angular', 'react', 'vue'];
+  readonly frameworks: string[] = ['angular', 'react', 'vue'];
   versions: any = [];
   frameworkVersions: any = [];
-  month: any = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  hobbiesArray = new FormArray([new FormControl([], Validators.required)]);
+  readonly month: any = [
+    '1 month',
+    '2 month',
+    '6 month',
+    '1 year',
+    '2 years',
+    '3 years+'
+  ];
 
   private readonly existsEmails = ['test@test.test'];
 
@@ -36,7 +40,15 @@ export class AppComponent {
       dateOfBirth: new FormControl(null, [Validators.required]),
       framework: new FormControl(null, [Validators.required]),
       frameworkVersion: new FormControl(null, [Validators.required]),
-      hobby: new FormControl(null, [Validators.required]),
+      hobby: new FormArray(
+        [
+          new FormGroup({
+            name: new FormControl('football'),
+            duration: new FormControl(this.month[0])
+          })
+        ],
+        [Validators.required]
+      ),
       email: new FormControl(
         null,
         [Validators.required, Validators.email],
@@ -48,7 +60,21 @@ export class AppComponent {
     });
   }
 
-  ngOnInit(): void {}
+  private initForm() {
+    this.personForm = new FormGroup({
+      firstName: new FormControl(null, [Validators.required]),
+      lastName: new FormControl(null, [Validators.required]),
+      dateOfBirth: new FormControl(null, [Validators.required]),
+      framework: new FormControl(null, [Validators.required]),
+      frameworkVersion: new FormControl(null, [Validators.required]),
+      hobby: new FormArray([], [Validators.required]),
+      email: new FormControl(
+        null,
+        [Validators.required, Validators.email],
+        this.emailValidator()
+      )
+    });
+  }
 
   private isEmailExist(email: string): Observable<boolean> {
     return of(this.existsEmails.includes(email));
@@ -66,17 +92,55 @@ export class AppComponent {
     if (frameworkControl)
       this.frameworkVersions = this.versions[frameworkControl.value];
   }
+
   getVersions(): Observable<any> {
     return this.http.get('./assets/dbversions.json');
   }
 
   onSubmit(): void {
-    console.log(this.personForm.value);
+    if (this.personForm.valid) console.log(this.personForm.value);
   }
-  addInputControl() {
-    this.hobbiesArray.push(new FormControl('', Validators.required));
+
+  get firstName(): FormControl {
+    return this.personForm.get('firstName') as FormControl;
   }
-  removeInputControl(idx: number) {
-    this.hobbiesArray.removeAt(idx);
+
+  get lastName(): FormControl {
+    return this.personForm.get('lastName') as FormControl;
+  }
+
+  get dateOfBirth(): FormControl {
+    return this.personForm.get('dateOfBirth') as FormControl;
+  }
+
+  get framework(): FormControl {
+    return this.personForm.get('framework') as FormControl;
+  }
+
+  get frameworkVersion(): FormControl {
+    return this.personForm.get('frameworkVersion') as FormControl;
+  }
+
+  get email(): FormControl {
+    return this.personForm.get('email') as FormControl;
+  }
+
+  get hobbies(): FormArray {
+    return this.personForm.get('hobby') as FormArray;
+  }
+
+  newHobby(): FormGroup {
+    return new FormGroup({
+      name: new FormControl(null, [Validators.required]),
+      duration: new FormControl(null, [Validators.required])
+    });
+  }
+
+  addHobby() {
+    this.hobbies.push(this.newHobby());
+  }
+
+  removeHobby(idx: number) {
+    this.hobbies.removeAt(idx);
   }
 }

@@ -6,36 +6,68 @@
 .container {
   display: flex;
   flex-wrap: wrap;
-  max-width: 500px;
+  max-width: 750px;
   align-items: center;
   border-radius: 10px;
   box-shadow: 0 0.6rem 1rem rgba(0, 0, 0, 0.25);
   margin: 80px auto;
 }
 .container mat-form-field {
-  display: flex;
+  display: inline-block;
   justify-content: center;
 }
 
-.form__hobby {
+.hobby__inputs {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
   flex-wrap: wrap;
-  padding-bottom: 10px;
 }
 .sub {
-  padding: 20px 0px;
   margin-left: 50%;
   transform: translate(-50%, 0);
-  width: 350px;
 }
 .frm {
   padding: 20px 10px;
 }
 .hby {
-  padding: 0px 10px;
+  padding: 20px 10px 0px 10px;
 }
 
 .form__hobby button {
-  margin: 0px 10px;
+  margin: auto auto;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+}
+
+.form__inputs {
+  display: flex;
+
+  flex-wrap: wrap;
+}
+
+.form__inputs mat-form-field {
+  padding: 10px 10px;
+}
+
+.form__hobby-head {
+  padding-top: 20px;
+  justify-content: center;
+  display: flex;
+}
+
+.btn__warn button {
+  margin-left: 5px;
+}
+.hobby__add-btn {
+  display: flex;
+  justify-content: center;
+  padding: 5px 0px 30px 0px;
+}
+
+h2 {
+  margin: 0;
 }

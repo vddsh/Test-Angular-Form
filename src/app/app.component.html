@@ -1,142 +1,156 @@
 <div class="container">
   <form class="frm" [formGroup]="personForm" (ngSubmit)="onSubmit()">
-    <mat-form-field [appearance]="'fill'">
-      <mat-label>Name</mat-label>
-      <input
-        matInput
-        type="text"
-        formControlName="firstName"
-        placeholder="Name"
-      />
-      <mat-error *ngIf="personForm.controls['firstName'].errors?.['required']"
-        >Name is required!
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field [appearance]="'fill'">
-      <mat-label>Last Name</mat-label>
-      <input
-        matInput
-        type="text"
-        formControlName="lastName"
-        placeholder="Last Name"
-      />
-      <mat-error *ngIf="personForm.controls['lastName'].errors?.['required']"
-        >Last Name is required!
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Выберите дату рождения</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="personForm.controls['dateOfBirth'].errors?.['required']"
-        >An email is required!
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Select framework</mat-label>
-      <mat-select
-        formControlName="framework"
-        (selectionChange)="onFrameworkChange()"
+    <div class="header"><h1></h1></div>
+    <div class="form__inputs">
+      <mat-form-field [appearance]="'fill'">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="firstName"
+          placeholder="Name"
+        />
+        <mat-error *ngIf="firstName.errors?.['required']"
+          >Name is required!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field [appearance]="'fill'" class="form__lastname">
+        <mat-label>Last Name</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="lastName"
+          placeholder="Last Name"
+        />
+        <mat-error *ngIf="lastName.errors?.['required']"
+          >Last Name is required!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="form__date">
+        <mat-label>Birthday</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="dateOfBirth"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="dateOfBirth.errors?.['required']"
+          >An email is required!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Select framework</mat-label>
+        <mat-select
+          formControlName="framework"
+          (selectionChange)="onFrameworkChange()"
+        >
+          <mat-option *ngFor="let f of frameworks" [value]="f">{{
+            f
+          }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="framework.errors?.['required']"
+          >An framework is required!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Select an frameworkVersion</mat-label>
+        <mat-select
+          formControlName="frameworkVersion"
+          [disabled]="frameworkVersions.length == 0"
+        >
+          <mat-option *ngFor="let v of frameworkVersions" [value]="v">{{
+            v
+          }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="frameworkVersion.errors?.['required']"
+          >An framework version is required!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field [appearance]="'fill'">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          formControlName="email"
+          placeholder="Enter your email..."
+        />
+        <mat-error *ngIf="email.errors?.['required']"
+          >An email is required!
+        </mat-error>
+        <mat-error *ngIf="email.errors?.['emailExists']"
+          >Email already exists!
+        </mat-error>
+        <mat-error *ngIf="email.errors?.['email']"
+          >Please enter a valid email!
+        </mat-error>
+        <mat-progress-spinner
+          *ngIf="email.pending"
+          matSuffix
+          [mode]="'indeterminate'"
+          [diameter]="20"
+        ></mat-progress-spinner>
+      </mat-form-field>
+    </div>
+    <div class="form__hobby-head"><h2>Hobby</h2></div>
+    <div formArrayName="hobby">
+      <div
+        class="form__hobby inpur__row"
+        *ngFor="let h of hobbies.controls; last as isLast; index as idx"
       >
-        <mat-option *ngFor="let f of frameworks" [value]="f">{{
-          f
-        }}</mat-option>
-      </mat-select>
-      <mat-error *ngIf="personForm.controls['framework'].errors?.['required']"
-        >An framework is required!
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Select an frameworkVersion</mat-label>
-      <mat-select
-        formControlName="frameworkVersion"
-        [disabled]="frameworkVersions.length == 0"
-      >
-        <mat-option *ngFor="let v of frameworkVersions" [value]="v">{{
-          v
-        }}</mat-option>
-      </mat-select>
-      <mat-error
-        *ngIf="personForm.controls['frameworkVersion'].errors?.['required']"
-        >An framework version is required!
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field [appearance]="'fill'">
-      <mat-label>Email</mat-label>
-      <input
-        matInput
-        formControlName="email"
-        placeholder="Enter your email..."
-      />
-      <mat-error *ngIf="personForm.controls['email'].errors?.['required']"
-        >An email is required!
-      </mat-error>
-      <mat-error *ngIf="personForm.controls['email'].errors?.['emailExists']"
-        >Email already exists!
-      </mat-error>
-      <mat-error *ngIf="personForm.controls['email'].errors?.['email']"
-        >Please enter a valid email!
-      </mat-error>
-      <mat-progress-spinner
-        *ngIf="personForm.controls['email'].pending"
-        matSuffix
-        [mode]="'indeterminate'"
-        [diameter]="20"
-      ></mat-progress-spinner>
-    </mat-form-field>
-    <div
-      class="form__hobby inpur__row"
-      *ngFor="let h of hobbiesArray.controls; last as isLast; index as idx"
-    >
-      <div class="hby">
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Hobby</mat-label>
-          <input
-            matInput
-            type="text"
-            placeholder="Hobby"
-            formControlName="hobby"
-          />
-          <mat-error *ngIf="personForm.controls['hobby'].errors?.['required']"
-            >An framework version is required!
-          </mat-error>
-        </mat-form-field>
+        <div [formGroupName]="idx" class="hobby__inputs">
+          <div class="hby">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Hobby</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Hobby"
+                formControlName="name"
+              />
+              <mat-error *ngIf="hobbies.errors?.['required']"
+                >An framework version is required!
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="hby">
+            <mat-form-field appearance="fill">
+              <mat-label>Duration</mat-label>
+              <mat-select formControlName="duration">
+                <mat-option *ngFor="let m of month" [value]="m">{{
+                  m + " month"
+                }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="hobbies.errors?.['required']"
+                >An framework version is required!
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <button
+              mat-raised-button
+              color="warn"
+              (click)="removeHobby(idx)"
+              *ngIf="idx !== 0"
+              class="btn__warn"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="hby">
-        <mat-form-field appearance="fill">
-          <mat-label>Duration</mat-label>
-          <mat-select formControlName="hobby">
-            <mat-option *ngFor="let m of month" [value]="m">{{
-              m + " month"
-            }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="personForm.controls['hobby'].errors?.['required']"
-            >An framework version is required!
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div>
+      <div class="hobby__add-btn">
         <button
           mat-raised-button
           color="primary"
-          *ngIf="isLast"
-          (click)="addInputControl()"
+          (click)="addHobby()"
+          type="button"
         >
-          Add Hobby
-        </button>
-        <button
-          mat-raised-button
-          color="warn"
-          (click)="removeInputControl(idx)"
-          *ngIf="hobbiesArray.length > 1"
-        >
-          Delete Hobby
+          Add hobby
         </button>
       </div>
     </div>
     <button class="sub" mat-raised-button color="primary">
-      Submit
+      Send
     </button>
   </form>
 </div>
